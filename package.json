@@ -1,0 +1,27 @@
+{
+  "name": "proker",
+  "version": "0.0.2",
+  "description": "This a discord bot, not a joker.",
+  "main": "proker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mukulpathania1107/Proker.git"
+  },
+  "keywords": [
+    "Discord",
+    "Bot"
+  ],
+  "author": "Mukul Pathania",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mukulpathania1107/Proker/issues"
+  },
+  "homepage": "https://github.com/mukulpathania1107/Proker#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "eslint": "^7.14.0"
+  }
+}
