@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/mukulpathania1107/Proker#readme",
   "dependencies": {
-    "discord.js": "^12.5.1",
+    "discord.js": "^12.5.1"
+  },
+  "devDependencies": {
     "eslint": "^7.14.0"
   }
 }
