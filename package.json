@@ -4,6 +4,7 @@
   "description": "This a discord bot, not a joker.",
   "main": "proker.js",
   "scripts": {
+    "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +22,8 @@
   },
   "homepage": "https://github.com/mukulpathania1107/Proker#readme",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "eslint": "^7.14.0"
