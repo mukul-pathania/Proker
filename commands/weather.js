@@ -2,47 +2,40 @@ module.exports = {
 	name: 'weather',
 	description: 'Get weather information by your zip code and country code.',
 	usage: '[zipcode countrycode]',
-	execute(message, args) {
+	async execute(message, args) {
 		if (!args.length) {
 			return message.reply('Please provide a zipcode to search for.');
 		}
 		message.channel.startTyping();
 		const messageToDelete = message.channel.send('Processing your request...');
-		sendWeatherEmbed(message, args, messageToDelete);
+		const weather = await getWeather(args);
+		messageToDelete.then(msg => msg.delete({ timeout: 1 }));
+		message.channel.stopTyping();
+		if (weather == -1) {
+			return message.reply('Please make sure you have provided the right zipcode and country code.');
+		}
+		return message.channel.send({ embed: makeWeatherEmbed(weather) });
 	},
 };
 
 const { openWeatherMapApiToken } = require('../config.json');
-const https = require('https');
+const fetch = require('node-fetch');
+const querystring = require('querystring');
 
-function sendWeatherEmbed(message, args, messageToDelete) {
-	const zipCode = args[0];
-	let weather;
-	const countryCode = ',' + (args[1] || 'IN');
-	const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}${countryCode}&appid=${openWeatherMapApiToken}&units=metric`;
-	// console.log(url);
-	https.get(url, (response) => {
-		response.on('data', (data) => {
-			weather = JSON.parse(data);
-			message.channel.stopTyping();
-			messageToDelete.then((msg) => msg.delete({ timeout: 1 }));
-			if (weather.cod == '404') {
-				return message.reply(
-					'Please make sure you have provided the right zipcode and country code.',
-				);
-			}
-			const weatherEmbed = makeEmbed(weather);
-			message.channel.send({ embed: weatherEmbed });
-		});
-		response.on('error', () => {
-			return message.reply(
-				'Please make sure you have provided the right zipcode and country code.',
-			);
-		});
-	});
+async function getWeather(args) {
+	const zipCode = args[0] + ',' + (args[1] || 'IN');
+	const query = querystring.stringify({ zip: zipCode, appid: openWeatherMapApiToken, units: 'metric' });
+	const url = `https://api.openweathermap.org/data/2.5/weather?${query}`;
+	const weather = await fetch(url).then(response => response.json());
+	// console.log('URL: ' + url);
+	// console.log('Weather.name: ' + weather.name);
+	if (weather.cod == '404') {
+		return -1;
+	}
+	return weather;
 }
 
-function makeEmbed(weather) {
+function makeWeatherEmbed(weather) {
 	const weatherEmbed = {
 		color: 0x00ffff,
 		title: `Weather report of ${weather.name}`,
