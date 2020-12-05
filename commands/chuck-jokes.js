@@ -8,11 +8,11 @@ module.exports = {
 		const firstName = args[0] || 'Chuck';
 		const lastName = args[1] || 'Norris';
 		let joke = await getJoke(firstName, lastName);
-		if(joke == -1) {
-			return message.reply('An error occured while processing the request.');
-		}
 		messageToDelete.then(msg => msg.delete({ timeout: 1 }));
 		message.channel.stopTyping();
+		if (joke == -1) {
+			return message.reply('An error occured while processing the request.');
+		}
 		// console.log(joke);
 		joke = joke.replace(/&quot;/g, '\\"');
 		// console.log(joke);
@@ -29,7 +29,7 @@ async function getJoke(firstName, lastName) {
 	const url = `https://api.icndb.com/jokes/random?${query}`;
 	console.log(url);
 	const joke = await fetch(url).then(response => response.json());
-	if((!joke) || joke.type != 'success') {
+	if ((!joke) || joke.type != 'success') {
 		return -1;
 	}
 	console.log('Joke: ' + joke.value.joke);
