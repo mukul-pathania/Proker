@@ -2,6 +2,8 @@ module.exports = {
 	name: 'chuckjoke',
 	description: 'Get Chuck Norris jokes which can optionally have a different hero.',
 	usage: '[firstname lastname]',
+	cooldown: 10,
+	aliases: ['cj'],
 	async execute(message, args) {
 		message.channel.startTyping();
 		const messageToDelete = message.channel.send('Processing your request...');
@@ -27,11 +29,11 @@ const queryString = require('querystring');
 async function getJoke(firstName, lastName) {
 	const query = queryString.stringify({ firstName, lastName });
 	const url = `https://api.icndb.com/jokes/random?${query}`;
-	console.log(url);
+	// console.log(url);
 	const joke = await fetch(url).then(response => response.json());
 	if ((!joke) || joke.type != 'success') {
 		return -1;
 	}
-	console.log('Joke: ' + joke.value.joke);
+	// console.log('Joke: ' + joke.value.joke);
 	return joke.value.joke;
 }
