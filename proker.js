@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 
 const client = new Discord.Client();
+
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -15,11 +16,14 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.once('ready', () => {
+	client.user.setPresence({ activity: { name: 'pro help', type: 'PLAYING' }, status: 'online' });
 	console.log('Ready!');
 });
 
 client.on('message', message => {
 	if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
+	// console.log(message);
+	console.log('User: ' + (message.author.username));
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
